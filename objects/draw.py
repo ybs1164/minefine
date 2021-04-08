@@ -1,7 +1,7 @@
 import pygame
 import pygame.gfxdraw
 
-BLACK = (0,0,0)
+BLACK = (150,150,150)
 WHITE = (255,255,255)
 RED = (255,0,0)
 
@@ -18,7 +18,7 @@ def drawCell(screen, x, y, r, n):
     else:
         pygame.gfxdraw.circle(screen, x, y, r, BLACK)
 
-    font = pygame.font.SysFont(None, int(r))
+    font = pygame.font.SysFont(None, int(r * 2.8))
 
     if n>0:
         text = font.render(str(n), True, BLACK)

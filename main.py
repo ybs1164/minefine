@@ -5,7 +5,7 @@ from objects import utils
 
 # pylint: disable=no-member
 
-mapsize = (32, 32)
+mapsize = (64, 32)
 cellmap = utils.getCellMap(mapsize[0], mapsize[1])
 
 screen = pygame.display.set_mode((mapsize[0] * 20, mapsize[1] * 20))
@@ -41,7 +41,8 @@ while run:
                         close = [(0,1),(1,0),(0,-1),(-1,0),(1,1),(1,-1),(-1,-1),(-1,1)]
 
                         if cellmap[x][y].isMine:
-                            run = False
+                            # run = False
+                            continue
                         if cellmap[x][y].getMineCount()>0:
                             continue
 
@@ -63,8 +64,6 @@ while run:
 
         if event.type == pygame.QUIT:
             run = False
-
-    #clock.tick(60)
 
 pygame.quit()
 sys.exit()
