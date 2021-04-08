@@ -17,6 +17,8 @@ class Cell:
     def getMineCount(self):
         if not self.isEnable:
             return -1
+        if self.isMine:
+            return -2
         cnt = 0
         for i in self.closecells:
             if i.isMine:
