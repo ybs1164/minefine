@@ -1,18 +1,23 @@
 import random
 from . import cell
 
+close = [(0,1),(1,0),(0,-1),(-1,0),(1,1),(1,-1),(-1,-1),(-1,1)]
+
 def isBorder(x, y, w, h):
     return x < 0 or y < 0 or x > w-1 or y > h-1
 
-def getCellMap(w, h):
+def getCellMap(w, h, count):
     cellmap = []
+    cells = w * h
     for i in range(w):
         cellmap.append([])
         for _ in range(h):
-            cellmap[i].append(cell.Cell(random.random() > 0.9))
+            isMine = random.random() < count / cells
+            if isMine:
+                count-=1
+            cellmap[i].append(cell.Cell(isMine))
+            cells-=1
     
-    close = [(0,1),(1,0),(0,-1),(-1,0),(1,1),(1,-1),(-1,-1),(-1,1)]
-
     for i in range(w):
         for j in range(h):
             l = []
@@ -22,5 +27,33 @@ def getCellMap(w, h):
                 l.append(cellmap[i+k[0]][j+k[1]])
             cellmap[i][j].setCloseCells(l)
 
-
     return cellmap
+
+
+def clickCellMap(cellmap, x, y, w, h):
+    celllist = [(x, y)]
+
+    returnlist = []
+
+    while len(celllist) > 0:
+        x = celllist[-1][0]
+        y = celllist[-1][1]
+
+        returnlist.append(celllist[-1])
+        celllist.pop()
+
+        if not cellmap[x][y].isEnable:
+            cellmap[x][y].isEnable = True
+
+            if cellmap[x][y].isMine:
+                return []
+                continue
+            if cellmap[x][y].getMineCount()>0:
+                continue
+
+            for k in close:
+                if isBorder(x+k[0], y+k[1], w, h):
+                    continue
+                celllist.append((x+k[0], y+k[1]))
+    
+    return returnlist
