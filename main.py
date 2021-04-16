@@ -19,7 +19,7 @@ for i in range(mapsize[0]):
     for j in range(mapsize[1]):
         draw.drawCell(screen, i, j, 10, cellmap[i][j].getMineCount())
 
-pygame.display.flip()
+pygame.display.update()
 
 run = True
 while run:
@@ -29,12 +29,11 @@ while run:
             mousey = event.pos[1] // 20
 
             if event.button == 1: # 좌클릭
-                isGameover = True
-                for p in utils.clickCellMap(cellmap, mousex, mousey, mapsize[0], mapsize[1]):
-                    isGameover = False
-                    draw.drawCell(screen, p[0], p[1], 10, cellmap[p[0]][p[1]].getMineCount())
-                if isGameover:
+                if cellmap[mousex][mousey].isMine:
                     run = False
+                    continue
+                for p in utils.clickCellMap(cellmap, mousex, mousey, mapsize[0], mapsize[1]):
+                    draw.drawCell(screen, p[0], p[1], 10, cellmap[p[0]][p[1]].getMineCount())
             elif event.button == 3: # 우클릭
                 if cellmap[mousex][mousey].isEnable:
                     continue
@@ -42,7 +41,7 @@ while run:
 
                 draw.drawCell(screen, mousex, mousey, 10, cellmap[mousex][mousey].getMineCount())
 
-            pygame.display.flip()
+            pygame.display.update()
 
         if event.type == pygame.QUIT:
             run = False
