@@ -20,12 +20,12 @@ def getCellMap(w, h, count):
     
     for i in range(w):
         for j in range(h):
-            l = []
+            if not cellmap[i][j].isMine:
+                continue
             for k in close:
                 if isBorder(i+k[0], j+k[1], w, h):
                     continue
-                l.append(cellmap[i+k[0]][j+k[1]])
-            cellmap[i][j].setCloseCells(l)
+                cellmap[i+k[0]][j+k[1]].mineCount+=1
 
     return cellmap
 
@@ -35,6 +35,10 @@ def clickCellMap(cellmap, x, y, w, h):
 
     returnlist = []
 
+    if cellmap[x][y].isEnable:
+        return []
+    cellmap[x][y].isEnable = True
+
     while len(celllist) > 0:
         x = celllist[-1][0]
         y = celllist[-1][1]
@@ -42,18 +46,17 @@ def clickCellMap(cellmap, x, y, w, h):
         returnlist.append(celllist[-1])
         celllist.pop()
 
-        if not cellmap[x][y].isEnable:
-            cellmap[x][y].isEnable = True
+        if cellmap[x][y].isMine:
+            return [(x, y)]
+        if cellmap[x][y].getMineCount()>0:
+            continue
 
-            if cellmap[x][y].isMine:
-                return []
+        for k in close:
+            if isBorder(x+k[0], y+k[1], w, h):
                 continue
-            if cellmap[x][y].getMineCount()>0:
+            if cellmap[x+k[0]][y+k[1]].isEnable:
                 continue
-
-            for k in close:
-                if isBorder(x+k[0], y+k[1], w, h):
-                    continue
-                celllist.append((x+k[0], y+k[1]))
+            cellmap[x+k[0]][y+k[1]].isEnable = True
+            celllist.append((x+k[0], y+k[1]))
     
     return returnlist

@@ -6,6 +6,8 @@ SECONDARY = (255,255,255)
 MINE = (255,100,100)
 FLAG = (100,100,255)
 
+UI = (230,230,230)
+
 def background(screen):
     screen.fill(SECONDARY)
 
@@ -30,3 +32,8 @@ def drawCell(screen, x, y, r, n):
         text = font.render(str(n), True, PRIMARY)
         text_rect = text.get_rect(center=(x, y))
         screen.blit(text, text_rect)
+
+def drawCellMap(screen, cellmap, w, h):
+    for i in range(w):
+        for j in range(h):
+            drawCell(screen, i, j, 10, cellmap[i][j].getMineCount())
