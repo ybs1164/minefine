@@ -15,7 +15,7 @@ pygame.display.set_caption('Minesweep')
 
 from objects import ui
 
-mineCount = 50
+mineCount = 120
 cellmap = utils.getCellMap(mapsize[0], mapsize[1], mineCount)
 
 draw.background(screen)
@@ -82,7 +82,6 @@ while run:
                                 draw.drawCell(screen, p[0], p[1], 10, cellmap[p[0]][p[1]].getMineCount())
                                 showCells+=1
                     
-                    print(showCells)
                     if showCells == mapsize[0] * mapsize[1] - mineCount:
                         ui.ClearPanel("")
                         enableMine = False
@@ -93,7 +92,7 @@ while run:
                     continue
                 cellmap[mousex][mousey].isFlag = not cellmap[mousex][mousey].isFlag
                 if cellmap[mousex][mousey].isMine:
-                    countFlag = 1 if cellmap[mousex][mousey].isFlag else -1
+                    countFlag += 1 if cellmap[mousex][mousey].isFlag else -1
                 if countFlag == mineCount:
                     ui.ClearPanel("")
                     enableMine = False
