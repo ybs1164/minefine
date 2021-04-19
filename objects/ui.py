@@ -5,38 +5,27 @@ from pygame_gui.elements import UIPanel
 from pygame_gui.elements import UILabel
 from pygame_gui.elements import UIButton
 
-# todo : receive this data from main.py's mapsize...
-#        or this data send to main.py's mapsize
-mapsize = (32, 32)
+def GetManager(w, h):
+    return pygame_gui.UIManager((w * 20, h * 20))
 
-manager = pygame_gui.UIManager((mapsize[0] * 20, mapsize[1] * 20))
+def GetPanel(manager, w, h, title, sub):
+    panel = UIPanel(pygame.Rect(w * 10 - 150, h * 10 - 100, 300, 200),
+                   starting_layer_height=4,
+                   manager=manager)
+    panel.hide()
 
-ggPanel = UIPanel(pygame.Rect(mapsize[0]*10 - 150, mapsize[1]*10 - 100, 300, 200),
-                  starting_layer_height=4,
-                  manager=manager)
+    UIButton(pygame.Rect(0, 150, 294, 44), 'Retry', manager, container=panel)
 
-ggPanel.hide()
+    UILabel(pygame.Rect(0, 0, 294, 30),
+            text=title,
+            manager=manager,
+            container=panel,
+            parent_element=panel)
+    
+    UILabel(pygame.Rect(0, 70, 294, 60),
+            text=sub,
+            manager=manager,
+            container=panel,
+            parent_element=panel)
 
-retryButton = UIButton(pygame.Rect(0, 150, 294, 44), 'Retry', manager, container=ggPanel)
-
-titleLabel = UILabel(pygame.Rect(0, 0, 294, 30),
-                     text='Game Over',
-                     manager=manager,
-                     container=ggPanel,
-                     parent_element=ggPanel)
-
-subLabel = UILabel(pygame.Rect(0, 70, 294, 60),
-                   text='you just activated my trap mine',
-                   manager=manager,
-                   container=ggPanel,
-                   parent_element=ggPanel)
-
-def ChangePanel(title, sub):
-    titleLabel.set_text(title)
-    subLabel.set_text(sub)
-
-def ClearPanel(time):
-    ChangePanel("Game Clear", "You Win / " + time)
-
-def GameOverPanel():
-    ChangePanel("Game Over", "You just activated my trap mine")
+    return panel

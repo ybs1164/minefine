@@ -17,16 +17,22 @@ def drawCell(screen, x, y, r, n):
 
     pygame.draw.rect(screen, SECONDARY, [x-r, y-r, r*2, r*2])
 
-    if n==-3: # 깃발 세움
-        pygame.gfxdraw.filled_circle(screen, x, y, r, FLAG)
-    elif n==-2: # 지뢰 밟음
-        pygame.gfxdraw.filled_circle(screen, x, y, r, MINE)
-    elif n==-1: # 공개됨
-        pygame.gfxdraw.filled_circle(screen, x, y, r, PRIMARY)
-    else: # 비공개됨
-        pygame.gfxdraw.circle(screen, x, y, r, PRIMARY)
+    colors = [FLAG, MINE, PRIMARY]
 
-    font = pygame.font.SysFont(None, int(r * 2.8))
+    dr = r*0.9
+    if n<0:
+        pygame.gfxdraw.box(screen, [x-dr, y-dr, dr*2, dr*2], colors[n])
+
+    # if n==-3: # 깃발 세움
+    #     pygame.gfxdraw.filled_circle(screen, x, y, r, FLAG)
+    # elif n==-2: # 지뢰 밟음
+    #     pygame.gfxdraw.filled_circle(screen, x, y, r, MINE)
+    # elif n==-1: # 비공개됨
+    #     pygame.gfxdraw.filled_circle(screen, x, y, r, PRIMARY)
+    # else: # 공개됨
+    #     pygame.gfxdraw.circle(screen, x, y, r, PRIMARY)
+
+    font = pygame.font.SysFont('Arial', int(r * 2.), bold=True)
 
     if n>0:
         text = font.render(str(n), True, PRIMARY)
